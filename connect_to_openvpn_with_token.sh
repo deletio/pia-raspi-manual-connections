@@ -141,9 +141,9 @@ IFS=' '
 protocol="${connection_settings[1]}"
 encryption="${connection_settings[2]}"
 
-prefix_filepath="openvpn_config/standard.ovpn"
+prefix_filepath="`dirname $0`/openvpn_config/standard.ovpn"
 if [[ $encryption == "strong" ]]; then
-  prefix_filepath="openvpn_config/strong.ovpn"
+  prefix_filepath="`dirname $0`/openvpn_config/strong.ovpn"
 fi
 
 if [[ $protocol == "udp" ]]; then
@@ -167,17 +167,17 @@ echo remote $OVPN_SERVER_IP $port $protocol >> /opt/piavpn-manual/pia.ovpn
 # Copy the up/down scripts to /opt/piavpn-manual/
 # based upon use of PIA DNS
 if [ "$PIA_DNS" != true ]; then
-  cp openvpn_config/openvpn_up.sh /opt/piavpn-manual/
-  cp openvpn_config/openvpn_down.sh /opt/piavpn-manual/
+  cp `dirname $0`/openvpn_config/openvpn_up.sh /opt/piavpn-manual/
+  cp `dirname $0`/openvpn_config/openvpn_down.sh /opt/piavpn-manual/
   echo -e ${RED}This configuration will not use PIA DNS.${NC}
   echo If you want to also enable PIA DNS, please start the script
   echo with the env var PIA_DNS=true. Example:
   echo $ OVPN_SERVER_IP=\"$OVPN_SERVER_IP\" OVPN_HOSTNAME=\"$OVPN_HOSTNAME\" \
     PIA_TOKEN=\"$PIA_TOKEN\" CONNECTION_SETTINGS=\"$CONNECTION_SETTINGS\" \
-    PIA_PF=true PIA_DNS=true ./connect_to_openvpn_with_token.sh
+    PIA_PF=true PIA_DNS=true `dirname $0`/connect_to_openvpn_with_token.sh
 else
-  cp openvpn_config/openvpn_up_dnsoverwrite.sh /opt/piavpn-manual/openvpn_up.sh
-  cp openvpn_config/openvpn_down_dnsoverwrite.sh /opt/piavpn-manual/openvpn_down.sh
+  cp `dirname $0`/openvpn_config/openvpn_up_dnsoverwrite.sh /opt/piavpn-manual/openvpn_up.sh
+  cp `dirname $0`/openvpn_config/openvpn_down_dnsoverwrite.sh /opt/piavpn-manual/openvpn_down.sh
 fi
 
 # Start the OpenVPN interface.
@@ -239,10 +239,10 @@ if [ "$PIA_PF" != true ]; then
   echo -e $ ${GREEN}PIA_TOKEN=$PIA_TOKEN \
     PF_GATEWAY=$gateway_ip \
     PF_HOSTNAME=$OVPN_HOSTNAME \
-    ./port_forwarding.sh${NC}
+    `dirname $0`/port_forwarding.sh${NC}
   echo
   echo The location used must be port forwarding enabled, or this will fail.
-  echo Calling the ./get_region script with PIA_PF=true will provide a filtered list.
+  echo Calling the `dirname $0`/get_region script with PIA_PF=true will provide a filtered list.
   exit 1
 fi
 
@@ -260,9 +260,9 @@ echo -e "Starting procedure to enable port forwarding by running the following c
 $ ${GREEN}PIA_TOKEN=$PIA_TOKEN \\
   PF_GATEWAY=$gateway_ip \\
   PF_HOSTNAME=$OVPN_HOSTNAME \\
-  ./port_forwarding.sh${NC}"
+  `dirname $0`/port_forwarding.sh${NC}"
 
 PIA_TOKEN=$PIA_TOKEN \
   PF_GATEWAY=$gateway_ip \
   PF_HOSTNAME=$OVPN_HOSTNAME \
-  ./port_forwarding.sh
+  `dirname $0`/port_forwarding.sh

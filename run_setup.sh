@@ -98,7 +98,7 @@ while :; do
   export PIA_PASS
 
   # Confirm credentials and generate token
-  ./get_token.sh
+  `dirname $0`/get_token.sh
 
   tokenLocation="/opt/piavpn-manual/token"
   # If the script failed to generate an authentication token, the script will exit early.
@@ -252,7 +252,7 @@ For example, you can try 0.2 for 200ms allowed latency.
       export PREFERRED_REGION
       VPN_PROTOCOL="no"
       export VPN_PROTOCOL
-      VPN_PROTOCOL=no ./get_region.sh
+      VPN_PROTOCOL=no `dirname $0`/get_region.sh
       
       if [ -s /opt/piavpn-manual/latencyList ]; then
         # Output the ordered list of servers that meet the latency specification $MAX_LATENCY
@@ -308,7 +308,7 @@ For example, you can try 0.2 for 200ms allowed latency.
     # Validate in-line declaration of PREFERRED_REGION; if invalid remove input to initiate prompts
     echo Region input is : $PREFERRED_REGION
     export PREFERRED_REGION
-    VPN_PROTOCOL=no ./get_region.sh
+    VPN_PROTOCOL=no `dirname $0`/get_region.sh
     if [[ $? != 1 ]]; then
       break
     fi
@@ -391,4 +391,4 @@ echo -e "${GREEN}PIA_DNS=$PIA_DNS${NC}"
 CONNECTION_READY="true"
 export CONNECTION_READY
 
-./get_region.sh
+`dirname $0`/get_region.sh
